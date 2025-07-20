@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>房正轩的词语复习测试（1-90）</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f5f5f5;
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      color: #0066cc;
+      text-align: center;
+    }
+    .question {
+      background: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 10px;
+    }
+    .question h3 {
+      margin: 0 0 10px 0;
+    }
+    button {
+      background-color: #007aff;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+    button:hover {
+      background-color: #005bb5;
+    }
+    .answer {
+      margin-top: 10px;
+      background: #e8f4fd;
+      padding: 8px;
+      border-radius: 4px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<h1>房正轩的词语复习测试（1-90）</h1>
+
+<div id="quiz-container"></div>
+
+<script>
+const words = [
+  { word: "委屈", meaning: "心里觉得不公平，有点想哭的感觉", pinyin: "wěi qū" },
+  { word: "忧愁", meaning: "心里难过、不开心的样子", pinyin: "yōu chóu" },
+  { word: "无私", meaning: "不为自己着想，愿意帮助别人", pinyin: "wú sī" },
+  { word: "霸道", meaning: "对别人不讲理、很强硬", pinyin: "bà dào" },
+  { word: "漆黑", meaning: "非常非常黑的样子", pinyin: "qī hēi" },
+  { word: "霸气", meaning: "很强大、自信、有气势", pinyin: "bà qì" },
+  { word: "霸占", meaning: "强行占用，不给别人", pinyin: "bà zhàn" },
+  { word: "恶霸", meaning: "欺负别人的坏人", pinyin: "è bà" },
+  { word: "程度", meaning: "事情发展的大小或深浅", pinyin: "chéng dù" },
+  { word: "起程", meaning: "开始出发，去一个地方", pinyin: "qǐ chéng" },
+  { word: "探望", meaning: "去看望人", pinyin: "tàn wàng" },
+  { word: "享受", meaning: "感到舒服或快乐", pinyin: "xiǎng shòu" },
+  { word: "排挤", meaning: "不欢迎别人，想让他离开", pinyin: "pái jǐ" },
+  { word: "冷落", meaning: "不理别人，让人觉得孤单", pinyin: "lěng luò" },
+  { word: "拥挤", meaning: "人很多，挤在一起", pinyin: "yōng jǐ" },
+  { word: "极了", meaning: "非常，非常", pinyin: "jí le" },
+  { word: "夺冠", meaning: "拿到第一名", pinyin: "duó guàn" },
+  { word: "争夺", meaning: "你抢我也抢，都想要", pinyin: "zhēng duó" },
+  { word: "惹得", meaning: "让别人有不好的感觉", pinyin: "rě de" },
+  { word: "抗拒", meaning: "不愿意接受，反对", pinyin: "kàng jù" },
+  { word: "开朗", meaning: "性格活泼爱笑", pinyin: "kāi lǎng" },
+  { word: "对抗", meaning: "面对面对着斗争", pinyin: "duì kàng" },
+  { word: "启示", meaning: "得到的提醒和启发", pinyin: "qǐ shì" },
+  { word: "不翼而飞", meaning: "东西突然不见了", pinyin: "bù yì ér fēi" },
+  { word: "猛兽", meaning: "很凶猛的动物", pinyin: "měng shòu" },
+  { word: "趁早", meaning: "早点去做", pinyin: "chèn zǎo" },
+  { word: "丝毫", meaning: "一点点（多用在否定）", pinyin: "sī háo" },
+  { word: "抵挡", meaning: "挡住外来的攻击", pinyin: "dǐ dǎng" },
+  { word: "遮挡", meaning: "用东西把别的东西遮起来", pinyin: "zhē dǎng" },
+  { word: "阻挡", meaning: "阻止别人前进", pinyin: "zǔ dǎng" },
+  { word: "马虎", meaning: "不认真", pinyin: "mǎ hu" },
+  { word: "攻击", meaning: "主动打别人", pinyin: "gōng jī" },
+  { word: "友善", meaning: "对别人很好", pinyin: "yǒu shàn" },
+  { word: "围攻", meaning: "很多人一起攻击", pinyin: "wéi gōng" },
+  { word: "主攻", meaning: "主要负责进攻", pinyin: "zhǔ gōng" },
+  { word: "攻势", meaning: "进攻的动作和气势", pinyin: "gōng shì" },
+  { word: "实际", meaning: "真正的情况", pinyin: "shí jì" },
+  { word: "专程", meaning: "特地为了某件事去", pinyin: "zhuān chéng" },
+  { word: "夺走", meaning: "把东西抢走", pinyin: "duó zǒu" },
+  { word: "新奇", meaning: "新鲜又特别", pinyin: "xīn qí" },
+  { word: "显示", meaning: "展现出来", pinyin: "xiǎn shì" },
+  { word: "探访", meaning: "去拜访别人", pinyin: "tàn fǎng" },
+  { word: "碰", meaning: "两样东西接触", pinyin: "pèng" },
+  { word: "碰撞", meaning: "两样东西撞在一起", pinyin: "pèng zhuàng" },
+  { word: "勉强", meaning: "不太愿意但还是去做", pinyin: "miǎn qiǎng" },
+  { word: "按照", meaning: "根据某个方法去做", pinyin: "àn zhào" },
+  { word: "报复", meaning: "别人对我不好，我也要对他不好", pinyin: "bào fù" },
+  { word: "糟糕", meaning: "非常不好", pinyin: "zāo gāo" },
+  { word: "展开", meaning: "开始进行", pinyin: "zhǎn kāi" },
+  { word: "碰巧", meaning: "刚好遇到", pinyin: "pèng qiǎo" },
+  { word: "线上", meaning: "在网上", pinyin: "xiàn shàng" },
+  { word: "储蓄", meaning: "把钱存起来", pinyin: "chǔ xù" },
+  { word: "户头", meaning: "银行里的账户", pinyin: "hù tóu" },
+  { word: "允许", meaning: "答应可以做", pinyin: "yǔn xǔ" },
+  { word: "携带", meaning: "带在身边", pinyin: "xié dài" },
+  { word: "退还", meaning: "把原来收的钱或东西还回去", pinyin: "tuì huán" },
+  { word: "款项", meaning: "一笔笔的钱", pinyin: "kuǎn xiàng" },
+  { word: "可享", meaning: "可以享受", pinyin: "kě xiǎng" },
+  { word: "预定", meaning: "先安排好未来要做的事", pinyin: "yù dìng" },
+  { word: "金额", meaning: "钱的总数", pinyin: "jīn é" },
+  { word: "退款", meaning: "退回已经付的钱", pinyin: "tuì kuǎn" },
+  { word: "资格", meaning: "有没有符合条件", pinyin: "zī gé" },
+  { word: "妻子", meaning: "太太", pinyin: "qī zi" },
+  { word: "外地", meaning: "不是本地", pinyin: "wài dì" },
+  { word: "度假", meaning: "去放松、休息的旅行", pinyin: "dù jià" },
+  { word: "出席", meaning: "有参加活动", pinyin: "chū xí" },
+  { word: "仍", meaning: "还是、依然", pinyin: "réng" },
+  { word: "更换", meaning: "换掉原来的", pinyin: "gēng huàn" },
+  { word: "银行", meaning: "管钱的地方", pinyin: "yín háng" },
+  { word: "抽奖", meaning: "参加抽出礼物的活动", pinyin: "chōu jiǎng" },
+  { word: "计划", meaning: "提前安排好要做的事", pinyin: "jì huà" },
+  { word: "投资", meaning: "用钱去赚更多钱", pinyin: "tóu zī" },
+  { word: "选择", meaning: "从几个里面挑一个", pinyin: "xuǎn zé" },
+  { word: "租金", meaning: "租东西要付的钱", pinyin: "zū jīn" },
+  { word: "出租", meaning: "把东西借出去收钱", pinyin: "chū zū" },
+  { word: "包括", meaning: "里面也有", pinyin: "bāo kuò" },
+  { word: "总额", meaning: "全部加起来的钱数", pinyin: "zǒng é" },
+  { word: "回酬", meaning: "做一件事后得到的钱或好处", pinyin: "huí chóu" },
+  { word: "家庭", meaning: "爸爸妈妈和孩子组成的家", pinyin: "jiā tíng" },
+  { word: "售卖", meaning: "卖东西", pinyin: "shòu mài" },
+  { word: "摊位", meaning: "摆在外面卖东西的小店", pinyin: "tān wèi" },
+  { word: "礼券", meaning: "可以当钱用的礼物卡", pinyin: "lǐ quàn" },
+  { word: "收入", meaning: "赚到的钱", pinyin: "shōu rù" },
+  { word: "支出", meaning: "花出去的钱", pinyin: "zhī chū" },
+  { word: "衬衫", meaning: "有扣子、正式的上衣", pinyin: "chèn shān" },
+  { word: "诞下", meaning: "生下宝宝", pinyin: "dàn xià" }
+];
+
+const container = document.getElementById("quiz-container");
+
+words.forEach((item, index) => {
+  const div = document.createElement("div");
+  div.className = "question";
+  div.innerHTML = `
+    <h3>第 ${index + 1} 题：${item.word}</h3>
+    <button onclick="document.getElementById('a${index}').style.display='block'">点击查看答案</button>
+    <div id="a${index}" class="answer">
+      <b>拼音：</b>${item.pinyin}<br/>
+      <b>解释：</b>${item.meaning}
+    </div>
+  `;
+  container.appendChild(div);
+});
+</script>
+
+</body>
+</html>
